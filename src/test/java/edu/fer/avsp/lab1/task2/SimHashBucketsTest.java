@@ -21,7 +21,7 @@ public class SimHashBucketsTest {
 
     InputReader correctOutput = new InputReader(classLoader.getResourceAsStream("lab1/task2/first/R.out"));
 
-    String result = correctOutput.readAsString().replaceAll("\n", "");
+    String result = correctOutput.readAsString().replaceAll(System.lineSeparator(), "");
     String myResult = myOutput.toString().replaceAll(System.lineSeparator(), "");
 
     assertEquals(result, myResult);
@@ -37,7 +37,7 @@ public class SimHashBucketsTest {
     new SimHashBuckets().solve(input, new PrintWriter(myOutput));
     InputReader correctOutput = new InputReader(classLoader.getResourceAsStream("lab1/task2/second/R.out"));
 
-    String result = correctOutput.readAsString().replaceAll("\n", "");
+    String result = correctOutput.readAsString().replaceAll(System.lineSeparator(), "");
     String myResult = myOutput.toString().replaceAll(System.lineSeparator(), "");
 
     assertEquals(result, myResult);

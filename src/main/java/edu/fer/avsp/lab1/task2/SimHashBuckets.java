@@ -4,7 +4,6 @@ import edu.fer.avsp.lab1.SimHashMD5;
 import edu.fer.avsp.util.InputReader;
 import edu.fer.avsp.util.Pair;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,7 +32,7 @@ public class SimHashBuckets {
     long start = System.currentTimeMillis();
     int n = in.readInt();
     simHashedTexts = IntStream.range(0, n)
-        .mapToObj(i -> in.readLine().trim())
+        .mapToObj(i -> in.readLineTrimmed().trim())
         .map(line -> new SimHashMD5(line).toBitSet())
         .toArray(BitSet[]::new);
     long time = System.currentTimeMillis() - start;
@@ -47,7 +46,7 @@ public class SimHashBuckets {
     start = System.currentTimeMillis();
     int q = in.readInt();
     queries = IntStream.range(0, q)
-        .mapToObj(i -> in.readLine().trim().split(" "))
+        .mapToObj(i -> in.readLineTrimmed().trim().split(" "))
         .map(split -> new Pair<>(
             Integer.parseInt(split[0]),
             Integer.parseInt(split[1]))

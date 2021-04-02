@@ -21,9 +21,25 @@ public class InputReader {
     }
   }
 
-  public String readLine() {
+  public double readDouble() {
+    try {
+      return Double.parseDouble(in.readLine().trim());
+    } catch (IOException cantHappen) {
+      throw new RuntimeException();
+    }
+  }
+
+  public String readLineTrimmed() {
     try {
       return in.readLine().trim();
+    } catch (IOException ignored) {
+      throw new RuntimeException();
+    }
+  }
+
+  public String readLine() {
+    try {
+      return in.readLine();
     } catch (IOException ignored) {
       throw new RuntimeException();
     }
@@ -34,7 +50,7 @@ public class InputReader {
     try {
       String line;
       while ((line = in.readLine()) != null) {
-        sb.append(line.trim());
+        sb.append(line).append(System.lineSeparator());
       }
     } catch (IOException ignored) {
     }

@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.fer.avsp</groupId>
-  <artifactId>Lab1</artifactId>
+  <artifactId>Labs</artifactId>
   <version>1.0</version>
 
-  <name>Lab1</name>
+  <name>Labs</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
