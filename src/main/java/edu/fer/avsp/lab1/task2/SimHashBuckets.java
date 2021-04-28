@@ -29,24 +29,17 @@ public class SimHashBuckets {
   }
 
   public void solve(InputReader in, PrintWriter out) {
-    long start = System.currentTimeMillis();
     int n = in.readInt();
     simHashedTexts = IntStream.range(0, n)
-        .mapToObj(i -> in.readLineTrimmed().trim())
+        .mapToObj(i -> in.readLineTrimmed())
         .map(line -> new SimHashMD5(line).toBitSet())
         .toArray(BitSet[]::new);
-    long time = System.currentTimeMillis() - start;
-    System.out.println("simhash:" + (time) / 1000. + "s");
 
-    start = System.currentTimeMillis();
     candidates = lsh(n);
-    time = System.currentTimeMillis() - start;
-    System.out.println("lsh: " + (time) / 1000. + "s");
 
-    start = System.currentTimeMillis();
     int q = in.readInt();
     queries = IntStream.range(0, q)
-        .mapToObj(i -> in.readLineTrimmed().trim().split(" "))
+        .mapToObj(i -> in.readLineTrimmed().split(" "))
         .map(split -> new Pair<>(
             Integer.parseInt(split[0]),
             Integer.parseInt(split[1]))
@@ -54,8 +47,6 @@ public class SimHashBuckets {
         .collect(Collectors.toList());
 
     queries.forEach(pair -> out.println(findSimilarTexts(pair.first, pair.second)));
-    time = System.currentTimeMillis() - start;
-    System.out.println("queries: " + (time) / 1000. + "s");
 
     out.flush();
   }

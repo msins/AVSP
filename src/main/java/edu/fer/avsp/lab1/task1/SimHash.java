@@ -25,13 +25,13 @@ public class SimHash {
   public void solve(InputReader in, PrintWriter out) {
     int n = in.readInt();
     simHashedTexts = IntStream.range(0, n)
-        .mapToObj(i -> in.readLineTrimmed().trim())
+        .mapToObj(i -> in.readLineTrimmed())
         .map(line -> new SimHashMD5(line).toBitSet())
         .toArray(BitSet[]::new);
 
     int q = in.readInt();
     queries = IntStream.range(0, q)
-        .mapToObj(i -> in.readLineTrimmed().trim().split(" "))
+        .mapToObj(i -> in.readLineTrimmed().split(" "))
         .map(split -> new Pair<>(
             Integer.parseInt(split[0]),
             Integer.parseInt(split[1]))
