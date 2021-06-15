@@ -2,70 +2,110 @@ package edu.fer.avsp.lab6;
 
 import edu.fer.avsp.util.InputReader;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
+import java.util.StringJoiner;
 
 public class Dgim {
 
-  private int N;
+  private int n;
   private int timestamp = 0;
-  public List<Bucket> buckets = new LinkedList<>();
+  public LinkedList<Bucket> buckets = new LinkedList<>();
 
   public static void main(String[] args) {
+    InputReader in = new InputReader(System.in);
+    PrintWriter out = new PrintWriter(System.out);
 
+    new Dgim().solve(in, out);
   }
 
   public void solve(InputReader in, PrintWriter out) {
-    N = in.readInt();
+    n = in.readInt();
 
     while (true) {
-      String line = in.readLineTrimmed();
-      if (line.isEmpty()) {
+      String line = in.readLine();
+      if (line == null || line.isEmpty()) {
         break;
       }
 
       if (line.startsWith("q")) {
-        int k = Integer.parseInt(line.split("\\s+")[1]);
+        int k = Integer.parseInt(line.split(" ")[1]);
+        out.println(query(k));
         continue;
       }
 
-      //bits
-      for (int bit : line.toCharArray()) {
+      for (char bit : line.toCharArray()) {
         timestamp++;
 
-        // drop the last bucket if it has no overlap with window
-        buckets = buckets.stream()
-            .dropWhile(bucket -> timestamp - bucket.timestamp >= N)
-            .collect(Collectors.toCollection(LinkedList::new));
+        dropOldBuckets();
 
         if (bit == '1') {
-          buckets.add(new Bucket(timestamp % N));
-          merge();
+          buckets.add(new Bucket(timestamp));
+          mergeBuckets();
         }
       }
-
     }
 
-
+    out.flush();
   }
 
-  private void merge() {
-    ListIterator<Bucket> iterator = buckets.listIterator();
-    var sameSizeCount = 0;
-    Bucket curr = iterator.next();
+  private void dropOldBuckets() {
+    Iterator<Bucket> iterator = buckets.iterator();
+    while (iterator.hasNext()) {
+      Bucket curr = iterator.next();
+      if (curr.timestamp <= timestamp - n) {
+        iterator.remove();
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  private int query(int k) {
+    // start from the newest bucket
+    Iterator<Bucket> iterator = buckets.descendingIterator();
+
+    int sum = 0;
+    Bucket curr;
     Bucket prev = null;
     while (iterator.hasNext()) {
-      if (prev != null && prev.getExponent() == curr.getExponent()) {
-
-      }
-      if (sameSizeCount >= 3) {
-
+      curr = iterator.next();
+      if (curr.timestamp <= timestamp - k) {
         break;
       }
-      sameSizeCount++;
 
+      sum += curr.count();
+      prev = curr;
+    }
+
+    if (prev == null) {
+      return 0;
+    }
+
+    // remove half of the last bucket
+    return sum - (int) Math.round(prev.count() / 2.);
+  }
+
+  private void mergeBuckets() {
+    Iterator<Bucket> iterator = buckets.descendingIterator();
+    Bucket prev = iterator.next();
+    Bucket curr;
+
+    int duplicateCounter = 0;
+    while (iterator.hasNext()) {
+      curr = iterator.next();
+      if (prev.exponent != curr.exponent) {
+        continue;
+      }
+
+      duplicateCounter++;
+      if (duplicateCounter == 2) {
+        iterator.remove();
+        prev.exponent++;
+        duplicateCounter = 0;
+        continue;
+      }
       prev = curr;
     }
   }
@@ -75,29 +115,21 @@ public class Dgim {
     private int timestamp;
     private int exponent;
 
-    public Bucket(int t) {
-      timestamp = t;
+    public Bucket(int timestamp) {
+      this.timestamp = timestamp;
       exponent = 0;
     }
 
-    public int getCount() {
+    public int count() {
       return (int) Math.pow(2, exponent);
     }
 
-    public void setExponent(int exponent) {
-      this.exponent = exponent;
-    }
-
-    public int getExponent() {
-      return exponent;
-    }
-
-    public long getTimestamp() {
-      return timestamp;
-    }
-
-    public void setTimestamp(int timestamp) {
-      this.timestamp = timestamp;
+    @Override
+    public String toString() {
+      return new StringJoiner(", ", "{", "}")
+          .add("t=" + timestamp)
+          .add("e=" + exponent)
+          .toString();
     }
   }
 }
