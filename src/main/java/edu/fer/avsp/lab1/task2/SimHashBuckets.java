@@ -61,11 +61,11 @@ public class SimHashBuckets {
 
   static int hash2int(int band, BitSet hash) {
     var bucketHash = hash.get(band * r, (band + 1) * r);
-    //if we sliced band which contains only zeros, toLongArray()[0] will throw array out of index
+    //if we sliced band which contains only zeros, toLongArray()[0] would throw array out of index
     if (bucketHash.length() == 0) {
       return 0;
     }
-    // bitset is implemented with long[] under the hood, band size is only 16 so casting won't cause problems
+    // bitset is implemented with long[] under the hood, band size is only 16 bits so casting won't cause problems
     return (int) bucketHash.toLongArray()[0];
   }
 
