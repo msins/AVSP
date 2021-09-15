@@ -173,11 +173,11 @@ public class CF {
         double value2 = normalisedMatrix[rowIndex2][j];
 
         if (!Double.isNaN(value1)) {
-          sumSquaresRow1 += Math.pow(normalisedMatrix[rowIndex1][j], 2);
+          sumSquaresRow1 += Math.pow(value1, 2);
         }
 
         if (!Double.isNaN(value2)) {
-          sumSquaresRow2 += Math.pow(normalisedMatrix[rowIndex2][j], 2);
+          sumSquaresRow2 += Math.pow(value2, 2);
         }
       }
 
