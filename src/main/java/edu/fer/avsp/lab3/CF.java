@@ -34,8 +34,8 @@ public class CF {
     int q = in.readInt();
     for (int i = 0; i < q; i++) {
       var queryArgs = Arrays.stream(in.readLineTrimmed().split("\\s+"))
-          .mapToInt(Integer::parseInt)
-          .toArray();
+                            .mapToInt(Integer::parseInt)
+                            .toArray();
       int wantedRowIndex = queryArgs[0] - 1;
       int wantedColumnIndex = queryArgs[1] - 1;
       int type = queryArgs[2]; // if 0 item-item, if 1 user-user
@@ -114,15 +114,16 @@ public class CF {
     public double predictValueAt(int rowIndex, int columnIndex, int cardinality) {
       double[] similarities = calculateSimilaritiesToRow(rowIndex);
 
-      int[] similarRowIndices = IntStream.range(0, similarities.length)
-          .filter(index -> index != rowIndex) // ignore similarity to itself
-          .filter(index -> similarities[index] > 0.0) // ignore negative similarities
-          .filter(index -> !Double.isNaN(matrix[index][columnIndex])) // ignore items which have no score
-          .mapToObj(index -> new Pair<>(index, similarities[index]))
-          .sorted(Comparator.comparing(pair -> pair.second, Comparator.reverseOrder())) // sort by similarity descending
-          .limit(cardinality)
-          .mapToInt(pair -> pair.first) // map back to index
-          .toArray();
+      int[] similarRowIndices =
+          IntStream.range(0, similarities.length)
+                   .filter(index -> index != rowIndex) // ignore similarity to itself
+                   .filter(index -> similarities[index] > 0.0) // ignore negative similarities
+                   .filter(index -> !Double.isNaN(matrix[index][columnIndex])) // ignore items which have no score
+                   .mapToObj(index -> new Pair<>(index, similarities[index]))
+                   .sorted(Comparator.comparing(pair -> pair.second, Comparator.reverseOrder())) // sort by similarity descending
+                   .limit(cardinality)
+                   .mapToInt(pair -> pair.first) // map back to index
+                   .toArray();
 
       double ratingSimilarity = 0.0;
 
@@ -196,9 +197,10 @@ public class CF {
     }
 
     public CfMatrix copy() {
-      return new CfMatrix(Arrays.stream(matrix)
-          .map(double[]::clone)
-          .toArray(double[][]::new)
+      return new CfMatrix(
+          Arrays.stream(matrix)
+                .map(double[]::clone)
+                .toArray(double[][]::new)
       );
     }
 
@@ -215,7 +217,9 @@ public class CF {
       for (double[] row : m) {
         sb.append("[");
         for (int i = 0; i < m[0].length; i++) {
-          sb.append(" ").append(formatter.format(row[i])).append(" ");
+          sb.append(" ")
+            .append(formatter.format(row[i]))
+            .append(" ");
         }
         sb.append("]\n");
       }

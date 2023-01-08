@@ -30,8 +30,8 @@ public class PCY {
     // 1st pass
     for (int i = 0; i < basketCount; i++) {
       var basket = Arrays.stream(in.readLineTrimmed().split(" "))
-          .map(Integer::valueOf)
-          .toArray(Integer[]::new);
+                         .map(Integer::valueOf)
+                         .toArray(Integer[]::new);
 
       baskets.add(basket);
 
@@ -41,7 +41,10 @@ public class PCY {
     }
 
     int threshold = (int) Math.floor(basketCount * s);
-    var frequentItemsCount = itemCounter.values().stream().filter(count -> count > threshold).count();
+    var frequentItemsCount = itemCounter.values()
+                                        .stream()
+                                        .filter(count -> count > threshold)
+                                        .count();
     var A = (int) (0.5 * frequentItemsCount * (frequentItemsCount - 1));
     int uniqueItemsCount = itemCounter.size();
 
@@ -84,9 +87,10 @@ public class PCY {
     var P = pairs.size();
     out.println(A);
     out.println(P);
-    pairs.values().stream()
-        .sorted(Comparator.reverseOrder())
-        .forEach(out::println);
+    pairs.values()
+         .stream()
+         .sorted(Comparator.reverseOrder())
+         .forEach(out::println);
 
     out.flush();
   }
